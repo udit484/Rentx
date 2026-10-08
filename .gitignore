@@ -1,0 +1,9 @@
+node_modules/
+dist/
+coverage/
+.env
+*.pem
+*.key
+terraform.tfstate*
+.terraform/
+kubeconfig
