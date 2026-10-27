@@ -1,0 +1,140 @@
+name: RentX CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: rentx-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  frontend:
+    name: Frontend tests and build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - name: Install dependencies
+        working-directory: frontend
+        run: npm ci --legacy-peer-deps
+      - name: Run frontend tests
+        working-directory: frontend
+        run: npm test
+      - name: Build frontend
+        working-directory: frontend
+        run: npm run build
+
+  backend:
+    name: Backend checks (${{ matrix.service }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        service:
+          - auth-service
+          - user-service
+          - product-service
+          - booking-service
+          - payment-service
+          - notification-service
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: services/${{ matrix.service }}/package-lock.json
+      - name: Install service dependencies
+        run: npm ci --prefix "services/${{ matrix.service }}"
+      - name: Check JavaScript syntax
+        run: node --check "services/${{ matrix.service }}/src/server.js"
+      - name: Run configured tests
+        env:
+          SERVICE: ${{ matrix.service }}
+        run: |
+          SCRIPT="$(node -p "require('./services/' + process.env.SERVICE + '/package.json').scripts?.test || ''")"
+          if [ -n "$SCRIPT" ] && ! printf '%s' "$SCRIPT" | grep -qi 'no test specified'; then
+            npm test --prefix "services/$SERVICE"
+          else
+            echo "No meaningful test script configured for $SERVICE; syntax check completed."
+          fi
+
+  filesystem-security:
+    name: Trivy filesystem scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Scan source, dependencies and configuration
+        uses: aquasecurity/trivy-action@0.36.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          scanners: vuln,misconfig,secret
+          severity: CRITICAL
+          ignore-unfixed: true
+          format: table
+          exit-code: '1'
+
+  containers:
+    name: Build and scan (${{ matrix.name }})
+    runs-on: ubuntu-latest
+    needs: [frontend, backend, filesystem-security]
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: frontend
+            type: frontend
+            port: 80
+          - name: auth-service
+            type: backend
+            port: 5001
+          - name: user-service
+            type: backend
+            port: 5002
+          - name: product-service
+            type: backend
+            port: 5003
+          - name: booking-service
+            type: backend
+            port: 5004
+          - name: payment-service
+            type: backend
+            port: 5005
+          - name: notification-service
+            type: backend
+            port: 5006
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build frontend image
+        if: matrix.type == 'frontend'
+        run: docker build --pull -f frontend/Dockerfile -t "rentx-${{ matrix.name }}:${{ github.sha }}" frontend
+      - name: Build backend image
+        if: matrix.type == 'backend'
+        run: |
+          docker build --pull -f docker/Dockerfile.node-service \
+            --build-arg "SERVICE_DIR=services/${{ matrix.name }}" \
+            --build-arg "SERVICE_PORT=${{ matrix.port }}" \
+            --build-arg "VCS_REF=${{ github.sha }}" \
+            -t "rentx-${{ matrix.name }}:${{ github.sha }}" .
+      - name: Scan built image
+        uses: aquasecurity/trivy-action@0.36.0
+        with:
+          scan-type: image
+          image-ref: rentx-${{ matrix.name }}:${{ github.sha }}
+          scanners: vuln
+          severity: CRITICAL
+          ignore-unfixed: true
+          format: table
+          exit-code: '1'

@@ -1,0 +1,21 @@
+{
+  "name": "booking-service",
+  "version": "1.0.0",
+  "description": "Planned port: 5004. Implement as an independently deployable microservice with , , unit tests, Dockerfile and Kubernetes Deployment/Service. Keep business logic isolated and communicate through APIs/events rather than shared database tables.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "dotenv": "^18.0.6",
+    "express": "^5.2.1",
+    "helmet": "^8.3.0",
+    "jsonwebtoken": "^9.0.3",
+    "pg": "^8.23.1"
+  }
+}

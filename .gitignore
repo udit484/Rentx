@@ -7,3 +7,29 @@ coverage/
 terraform.tfstate*
 .terraform/
 kubeconfig
+services/*/.env
+services/*/node_modules/
+
+# Local secrets and environment files
+.env.*
+!.env.example
+!.env.*.example
+
+# Local backups and logs
+backups/
+logs/
+*.bak*
+*.backup
+*.before-*
+
+# Local build and infrastructure state
+coverage/
+*.tfstate
+*.tfstate.*
+.terraform/
+kubeconfig
+
+# Local-only artifacts
+/frontend/vite
+/frontend/rentx-frontend@1.0.0
+/frontend/src/main.jsx.pre-live-products

@@ -1,1 +1,79 @@
 :root{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#eef2ff;background:#080b13;line-height:1.4}*{box-sizing:border-box}body{margin:0}button,input{font:inherit}button{cursor:pointer;border:0;color:inherit} .app{display:flex;min-height:100vh;background:radial-gradient(circle at 65% 0%,#18203b 0,#080b13 36%)}aside{width:245px;border-right:1px solid #20263a;padding:26px 18px;display:flex;flex-direction:column;position:fixed;inset:0 auto 0 0;background:#090c15e8;backdrop-filter:blur(20px)}.brand,.profile,.actions,.panelTitle,.price,.booking,.drawerHead,.chat,.sectionHead,.search,.location{display:flex;align-items:center}.brand{gap:11px;margin:0 8px 34px}.logo{width:39px;height:39px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,#8b5cf6,#22d3ee);font-weight:900}.brand b{display:block;font-size:20px}.brand span,.profile span,.muted,p{color:#8d96ad;font-size:12px}nav{display:grid;gap:7px}nav button{background:transparent;padding:12px 13px;border-radius:11px;text-align:left;display:flex;align-items:center;gap:12px;color:#929bb1}nav button.active,nav button:hover{background:#171d2e;color:#fff}.sideCard{margin-top:auto;background:#111727;border:1px solid #242c42;padding:15px;border-radius:15px}.sideCard b{display:block;margin:8px 0}.sideCard p{margin:0;line-height:1.5}.profile{gap:10px;margin-top:18px;padding:8px}.avatar{width:35px;height:35px;border-radius:50%;display:grid;place-items:center;background:#272e46;font-size:12px;font-weight:700}.profile b{display:block;font-size:13px}.profile span{font-size:10px}.mobile{display:none}main{margin-left:245px;width:calc(100% - 245px);padding:24px 34px 60px}header{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}.crumb{font-size:14px;color:#aab2c4}.actions{gap:8px}.actions button{position:relative;width:38px;height:38px;background:#111727;border:1px solid #242c42;border-radius:11px;display:grid;place-items:center}.actions i{position:absolute;top:-3px;right:-3px;width:14px;height:14px;border-radius:50%;background:#f472b6;font-size:9px;font-style:normal}.hero{border:1px solid #28304a;border-radius:25px;padding:36px;min-height:330px;display:flex;justify-content:space-between;overflow:hidden;background:linear-gradient(115deg,#13192b,#10152a 60%,#17132b);box-shadow:0 25px 80px #0005}.eyebrow,.aiBadge{display:inline-flex;gap:6px;align-items:center;color:#b8a4ff;font-size:11px;font-weight:700}.hero h1{font-size:46px;line-height:1.03;margin:12px 0}.hero h1 em{font-style:normal;color:#8ee7ff}.hero p{font-size:14px;max-width:610px}.search{margin-top:23px;background:#090d17;border:1px solid #303950;border-radius:14px;padding:6px 7px 6px 13px;max-width:700px;gap:10px}.search input{background:none;border:0;outline:0;color:white;flex:1;min-width:100px}.search button{background:#8b5cf6;padding:11px 18px;border-radius:10px;font-weight:700}.location{gap:5px;border-left:1px solid #293146;padding-left:10px;color:#aab2c4;font-size:12px}.chips{display:flex;gap:7px;margin-top:12px;flex-wrap:wrap}.chips button{background:#151b2a;border:1px solid #293146;padding:7px 10px;border-radius:99px;color:#9ea8be;font-size:11px}.aiOrb{width:250px;align-self:center;text-align:center;display:flex;flex-direction:column;align-items:center;gap:5px}.orb{width:100px;height:100px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle,#8b5cf655,#22d3ee11 60%,transparent 70%);border:1px solid #7561d755;box-shadow:0 0 80px #8b5cf633}.aiOrb b{font-size:18px}.aiOrb span,.aiOrb small{color:#9099b0;font-size:11px}.sectionHead{justify-content:space-between;margin:28px 0 14px}.sectionHead h2,.panel h2{font-size:16px;margin:0}.sectionHead p,.panel p{margin:3px 0}.sectionHead>button{background:none;color:#9fa9c0;font-size:12px;display:flex;gap:5px;align-items:center}.categories{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}.categories button{background:#101624;border:1px solid #202940;padding:15px;border-radius:14px;text-align:left;display:grid;grid-template-columns:36px 1fr auto;gap:8px;align-items:center}.categories strong{font-size:20px}.categories b,.categories span{display:block}.categories span{font-size:10px;color:#78839b;margin-top:3px}.products{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.products article{overflow:hidden;border:1px solid #222b40;background:#0f1522;border-radius:17px}.photo{height:160px;position:relative}.photo img{width:100%;height:100%;object-fit:cover}.photo button{position:absolute;right:10px;top:10px;width:32px;height:32px;border-radius:10px;background:#090d17cc;display:grid;place-items:center}.photo>span{position:absolute;bottom:9px;left:9px;background:#a78bfae8;color:#fff;border-radius:7px;padding:4px 7px;font-size:9px;font-weight:800}.pbody{padding:13px}.muted{display:flex;gap:4px;align-items:center}.pbody h3{font-size:14px;margin:7px 0}.rating{font-size:11px;color:#fbbf24}.rating span{color:#6f7890}.price{justify-content:space-between;margin-top:13px}.price b{font-size:13px}.price button{background:#fff;color:#090d17;padding:8px 10px;border-radius:8px;font-weight:800;font-size:10px}.bottom{display:grid;grid-template-columns:1.5fr 1fr;gap:14px;margin-top:14px}.panel{background:#0f1522;border:1px solid #222b40;border-radius:17px;padding:18px}.panelTitle{justify-content:space-between}.panelTitle>svg{color:#9d8bff}.booking{gap:12px;border-top:1px solid #20283b;padding-top:12px;margin-top:12px}.date{width:43px;height:43px;background:#171e2f;border-radius:10px;display:grid;place-items:center}.date b{font-size:15px}.date span{font-size:8px;color:#9da6bb}.booking>div:nth-child(2){flex:1}.booking div b{display:block;font-size:12px}.booking div span{display:block;color:#7d879e;font-size:10px}.booking>strong{font-size:11px}.score{margin-top:20px}.score>div:first-child{display:flex;align-items:baseline;gap:3px}.score span{color:#8993aa;font-size:11px;margin-right:auto}.score b{font-size:28px}.score small{color:#777f94}.bar{height:7px;background:#252c3e;border-radius:10px;margin-top:8px}.bar i{display:block;height:100%;width:94%;background:linear-gradient(90deg,#8b5cf6,#22d3ee);border-radius:inherit}.stats{display:flex;justify-content:space-between;margin-top:17px;color:#78839b;font-size:9px}.stats b{color:#dfe5f4;font-size:12px;display:block}.drawer{position:fixed;right:22px;bottom:22px;width:360px;background:#0d1320;border:1px solid #303a55;border-radius:20px;padding:18px;box-shadow:0 25px 80px #000b;z-index:5}.drawerHead{justify-content:space-between}.drawerHead div{display:flex;gap:8px;align-items:center}.drawerHead svg{color:#a78bfa}.drawerHead button{background:none;font-size:24px;color:#8c95aa}.drawer>p{line-height:1.6}.drawer>button{width:100%;margin-top:8px;padding:10px 11px;border:1px solid #252e44;background:#141b2a;border-radius:10px;text-align:left;display:flex;justify-content:space-between;color:#b6bfd1;font-size:11px}.chat{gap:6px;border:1px solid #293248;padding:5px;border-radius:11px;margin-top:15px}.chat span{font-size:9px;background:#8b5cf6;padding:7px;border-radius:7px}.chat input{flex:1;background:none;border:0;outline:0;color:white;font-size:11px}.chat button{background:#8b5cf6;border-radius:8px;padding:7px;font-size:10px}.toast{position:fixed;bottom:25px;left:50%;transform:translateX(-50%);background:#f5f7ff;color:#101522;padding:10px 14px;border-radius:10px;box-shadow:0 15px 40px #0008;font-size:12px;display:flex;gap:7px;align-items:center;z-index:8}@media(max-width:1100px){.categories{grid-template-columns:repeat(3,1fr)}.products{grid-template-columns:repeat(2,1fr)}.aiOrb{display:none}}@media(max-width:720px){aside{display:none}main{margin:0;width:100%;padding:16px}.mobile{display:grid;background:none}.hero{padding:24px;min-height:auto}.hero h1{font-size:34px}.search{flex-wrap:wrap}.search input{min-width:150px}.location{display:none}.search button{width:100%}.categories{grid-template-columns:repeat(2,1fr)}.products,.bottom{grid-template-columns:1fr}.drawer{left:12px;right:12px;width:auto}.crumb{font-size:12px}}
+
+
+/* RentX booking modal */
+.bookingOverlay{position:fixed;inset:0;z-index:1000;background:rgba(4,8,18,.76);backdrop-filter:blur(7px);display:flex;align-items:center;justify-content:center;padding:20px;overflow-y:auto}
+.bookingModal{width:min(100%,520px);max-height:calc(100vh - 40px);overflow-y:auto;background:#111827;color:#f8fafc;border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:26px;box-shadow:0 24px 80px rgba(0,0,0,.4)}
+.bookingModalHead{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.bookingModalHead h2{font-size:24px;margin:8px 0}
+.bookingModalHead p,.bookingHint{color:#9ca3af;font-size:13px;line-height:1.6}
+.bookingModalHead>button{background:rgba(255,255,255,.08);color:#fff;border:0;border-radius:9px;font-size:24px;width:36px;height:36px;cursor:pointer}
+.bookingSummary{display:grid;gap:12px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.09);border-radius:12px;padding:16px;margin:20px 0}
+.bookingSummary div{display:flex;justify-content:space-between;align-items:center;gap:14px}
+.bookingSummary span{color:#aeb8c8;font-size:13px}
+.bookingSummary strong{text-align:right;font-size:14px}
+.bookingLabel{display:grid;gap:8px;margin:16px 0;color:#e5e7eb;font-size:14px}
+.bookingLabel input{width:100%;min-width:0;box-sizing:border-box;padding:12px;border:1px solid #374151;border-radius:10px;background:#0b1220;color:#fff;color-scheme:dark;font:inherit}
+.bookingError{padding:10px 12px;border-radius:8px;background:rgba(239,68,68,.12);color:#fca5a5;font-size:13px}
+.bookingActions{display:flex;gap:12px;margin-top:20px}
+.bookingActions button{flex:1;padding:12px 14px;border:1px solid #374151;border-radius:10px;cursor:pointer;font-weight:600;background:#202b3d;color:#fff}
+.bookingActions button:last-child{background:#8b5cf6;border-color:#8b5cf6}
+.bookingActions button:disabled,.bookingModalHead>button:disabled{opacity:.55;cursor:not-allowed}
+@media(max-width:520px){.bookingModal{padding:20px}.bookingSummary div{align-items:flex-start;flex-direction:column;gap:5px}.bookingSummary strong{text-align:left}.bookingActions{flex-direction:column}}
+
+
+/* RentX owner booking panel */
+.ownerPanel{margin:24px 0}
+.ownerBooking{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:16px 0;border-bottom:1px solid rgba(148,163,184,.18)}
+.ownerBooking:last-child{border-bottom:0}
+.ownerBookingInfo{display:flex;flex-direction:column;gap:6px;min-width:0}
+.ownerBookingInfo>span{font-size:13px;color:#9ca3af;overflow-wrap:anywhere}
+.ownerBookingActions{display:flex;gap:8px;flex-shrink:0}
+.ownerBookingActions button{padding:9px 13px;border:1px solid #374151;border-radius:9px;background:#202b3d;color:#fff;cursor:pointer;font-weight:600}
+.ownerBookingActions button:first-child{background:#2563eb;border-color:#2563eb}
+.ownerBookingActions button:disabled{opacity:.55;cursor:not-allowed}
+@media(max-width:600px){.ownerBooking{align-items:stretch;flex-direction:column}.ownerBookingActions button{flex:1}}
+
+
+/* Keep the Create account label on one line in the header */
+.rentx-create-account {
+  white-space: nowrap;
+  flex: 0 0 auto;
+  width: auto;
+  min-width: max-content;
+  padding-inline: 10px;
+  font-size: 14px;
+}
+
+/* RentX branded login modal */
+.rentx-login-modal{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;padding:22px;background:rgba(3,7,18,.78);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);overflow-y:auto}
+.rentx-login-card{position:relative;box-sizing:border-box;width:min(100%,460px);padding:34px;border:1px solid #29334d;border-radius:25px;background:radial-gradient(ellipse at 100% 0%,rgba(125,75,255,.16),transparent 42%),linear-gradient(145deg,#141b30,#0b101d 78%);box-shadow:0 28px 100px rgba(0,0,0,.5);color:#edf2ff}
+.rentx-login-close{position:absolute;right:16px;top:14px;width:34px;height:34px;border:1px solid #2b354d;border-radius:11px;background:#121a2b;color:#dce5ff;font-size:25px;line-height:1;cursor:pointer}
+.rentx-login-brand{display:flex;align-items:center;gap:11px;margin-bottom:30px}
+.rentx-login-logo{display:grid;place-items:center;width:43px;height:43px;border-radius:13px;background:linear-gradient(135deg,#8b5cf6,#27c7e8);font-size:24px;font-weight:900;color:white}
+.rentx-login-brand strong{display:block;font-size:21px;letter-spacing:-.5px}.rentx-login-brand span{display:block;margin-top:2px;color:#8f9bb5;font-size:12px}
+.rentx-login-spark{display:grid;place-items:center;width:48px;height:48px;margin-bottom:19px;border:1px solid #40336f;border-radius:15px;background:#201c43;color:#bda7ff;font-size:29px}
+.rentx-login-eyebrow{margin:0 0 8px;color:#a995ff;font-size:11px;font-weight:800;letter-spacing:1.8px}
+.rentx-login-card h2{margin:0;color:#f1f4ff;font-size:clamp(25px,5vw,31px);line-height:1.2;letter-spacing:-.8px}
+.rentx-login-subtitle{margin:10px 0 25px;color:#98a7c2;font-size:14px;line-height:1.6}
+.rentx-login-card form label{display:block;margin:15px 0 8px;color:#dce4f6;font-size:13px;font-weight:650}
+.rentx-login-card form input{box-sizing:border-box;width:100%;min-width:0;height:47px;padding:0 14px;border:1px solid #303b55;border-radius:12px;outline:none;background:#090f1c;color:#f3f6ff;font:inherit;font-size:14px}
+.rentx-login-card form input::placeholder{color:#66748f}.rentx-login-card form input:focus{border-color:#8b5cf6;box-shadow:0 0 0 3px rgba(139,92,246,.15)}
+.rentx-password-wrap{display:flex;align-items:center;gap:8px;padding-right:10px;border:1px solid #303b55;border-radius:12px;background:#090f1c}
+.rentx-password-wrap:focus-within{border-color:#8b5cf6;box-shadow:0 0 0 3px rgba(139,92,246,.15)}
+.rentx-password-wrap input{border:0!important;box-shadow:none!important;background:transparent!important;flex:1}
+.rentx-password-toggle{flex-shrink:0;border:0;background:transparent;color:#a995ff;font-size:12px;font-weight:750;cursor:pointer}
+.rentx-login-error{margin:12px 0 0;color:#ff9da9;font-size:13px;line-height:1.5}
+.rentx-login-submit{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;height:49px;margin-top:23px;border:0;border-radius:13px;background:linear-gradient(100deg,#8b5cf6,#7653ed);color:white;font:inherit;font-size:15px;font-weight:800;cursor:pointer;box-shadow:0 8px 24px rgba(124,83,239,.22)}
+.rentx-login-submit:disabled{opacity:.65;cursor:wait}.rentx-login-submit span{font-size:20px}
+.rentx-login-footer{margin:22px 0 0;text-align:center;color:#98a7c2;font-size:13px}.rentx-login-footer button{padding:0;border:0;background:none;color:#a995ff;font:inherit;font-weight:750;cursor:pointer}
+.rentx-login-secure{margin-top:25px;padding-top:17px;border-top:1px solid #273148;text-align:center;color:#71809c;font-size:11px}
+@media(max-width:480px){.rentx-login-modal{padding:14px}.rentx-login-card{padding:25px 21px;border-radius:21px}.rentx-login-brand{margin-bottom:25px}}
+
+
+/* Rental listing pagination */
+.pagination-controls{display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;margin:24px 0 32px;color:var(--muted,#8f9bb5);font-size:14px}
+.pagination-controls button{padding:10px 16px;border:1px solid #35415b;border-radius:10px;background:#171f31;color:#f1f4ff;font:inherit;font-weight:650;cursor:pointer}
+.pagination-controls button:hover:not(:disabled){border-color:#8b5cf6}
+.pagination-controls button:disabled{opacity:.45;cursor:not-allowed}
+@media(max-width:480px){.pagination-controls{gap:10px}.pagination-controls span{width:100%;order:-1;text-align:center}.pagination-controls button{flex:1}}
