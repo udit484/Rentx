@@ -9,6 +9,7 @@ LABEL org.opencontainers.image.source="https://github.com/udit484/Rentx" \
       org.opencontainers.image.revision="${VCS_REF}"
 
 ENV NODE_ENV=production
+ENV HOST=0.0.0.0
 ENV PORT=${SERVICE_PORT}
 
 COPY ${SERVICE_DIR}/package.json ${SERVICE_DIR}/package-lock.json ./

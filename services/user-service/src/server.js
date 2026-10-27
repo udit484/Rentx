@@ -180,7 +180,7 @@ app.use((err, _req, res, _next) => {
 async function start() {
   await initializeDatabase();
 
-  app.listen(PORT, '127.0.0.1', () => {
+  app.listen(PORT, process.env.HOST || '0.0.0.0', () => {
     console.log(`User Service listening on 127.0.0.1:${PORT}`);
   });
 }
