@@ -76,7 +76,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Scan source, dependencies and configuration
-        uses: aquasecurity/trivy-action@0.36.0
+        uses: aquasecurity/trivy-action@v0.36.0
         with:
           scan-type: fs
           scan-ref: .
@@ -129,7 +129,7 @@ jobs:
             --build-arg "VCS_REF=${{ github.sha }}" \
             -t "rentx-${{ matrix.name }}:${{ github.sha }}" .
       - name: Scan built image
-        uses: aquasecurity/trivy-action@0.36.0
+        uses: aquasecurity/trivy-action@v0.36.0
         with:
           scan-type: image
           image-ref: rentx-${{ matrix.name }}:${{ github.sha }}
