@@ -96,7 +96,7 @@ jobs:
         include:
           - name: frontend
             type: frontend
-            port: 80
+            port: 8080
           - name: auth-service
             type: backend
             port: 5001
@@ -138,3 +138,12 @@ jobs:
           ignore-unfixed: true
           format: table
           exit-code: '1'
+
+  runtime-smoke:
+    name: Container runtime integration
+    runs-on: ubuntu-latest
+    needs: [containers]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run full container stack and API smoke tests
+        run: bash scripts/smoke-compose.sh

@@ -1,0 +1,189 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: rentxadmin
+      POSTGRES_PASSWORD: rentxadmin-ci-only
+      POSTGRES_DB: postgres
+      DB_USER: rentxapp
+      DB_PASSWORD: rentxapp-ci-password
+    volumes:
+      - ./docker/ci-init-db.sh:/docker-entrypoint-initdb.d/01-init.sh:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  auth-service:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.node-service
+      args:
+        SERVICE_DIR: services/auth-service
+        SERVICE_PORT: "5001"
+        VCS_REF: ci
+    environment:
+      NODE_ENV: production
+      HOST: "0.0.0.0"
+      PORT: "5001"
+      DATABASE_URL: postgresql://rentxapp:rentxapp-ci-password@postgres:5432/rentx_auth
+      JWT_SECRET: rentx-ci-secret-at-least-32-characters-long
+      JWT_EXPIRES_IN: 1h
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:5001/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 5s
+      timeout: 3s
+      retries: 24
+      start_period: 15s
+
+  user-service:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.node-service
+      args:
+        SERVICE_DIR: services/user-service
+        SERVICE_PORT: "5002"
+        VCS_REF: ci
+    environment: &db-env
+      NODE_ENV: production
+      HOST: "0.0.0.0"
+      DB_HOST: postgres
+      DB_PORT: "5432"
+      DB_USER: rentxapp
+      DB_PASSWORD: rentxapp-ci-password
+      JWT_SECRET: rentx-ci-secret-at-least-32-characters-long
+      PORT: "5002"
+      DB_NAME: rentx_users
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:5002/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 5s
+      timeout: 3s
+      retries: 24
+      start_period: 15s
+
+  product-service:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.node-service
+      args:
+        SERVICE_DIR: services/product-service
+        SERVICE_PORT: "5003"
+        VCS_REF: ci
+    environment:
+      <<: *db-env
+      PORT: "5003"
+      DB_NAME: rentx_products
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:5003/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 5s
+      timeout: 3s
+      retries: 24
+      start_period: 15s
+
+  booking-service:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.node-service
+      args:
+        SERVICE_DIR: services/booking-service
+        SERVICE_PORT: "5004"
+        VCS_REF: ci
+    environment:
+      <<: *db-env
+      PORT: "5004"
+      DB_NAME: rentx_bookings
+      PRODUCT_SERVICE_URL: http://product-service:5003
+    depends_on:
+      postgres:
+        condition: service_healthy
+      product-service:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:5004/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 5s
+      timeout: 3s
+      retries: 24
+      start_period: 15s
+
+  payment-service:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.node-service
+      args:
+        SERVICE_DIR: services/payment-service
+        SERVICE_PORT: "5005"
+        VCS_REF: ci
+    environment:
+      <<: *db-env
+      PORT: "5005"
+      DB_NAME: rentx_payments
+      BOOKING_SERVICE_URL: http://booking-service:5004
+    depends_on:
+      postgres:
+        condition: service_healthy
+      booking-service:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:5005/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 5s
+      timeout: 3s
+      retries: 24
+      start_period: 15s
+
+  notification-service:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.node-service
+      args:
+        SERVICE_DIR: services/notification-service
+        SERVICE_PORT: "5006"
+        VCS_REF: ci
+    environment:
+      <<: *db-env
+      PORT: "5006"
+      DB_NAME: rentx_notifications
+      SERVICE_KEY: rentx-ci-service-key
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:5006/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 5s
+      timeout: 3s
+      retries: 24
+      start_period: 15s
+
+  rentx-frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      auth-service:
+        condition: service_healthy
+      user-service:
+        condition: service_healthy
+      product-service:
+        condition: service_healthy
+      booking-service:
+        condition: service_healthy
+      payment-service:
+        condition: service_healthy
+      notification-service:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:8080/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 24
