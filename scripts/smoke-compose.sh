@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
+
 COMPOSE=(docker compose -f docker-compose.ci.yml)
+BASE=http://127.0.0.1:8080
 
 cleanup() {
   rc=$?
@@ -13,35 +15,66 @@ cleanup() {
 }
 trap cleanup EXIT
 
+request() {
+  local label="$1" expected="$2" response="$3"
+  shift 3
+  local status
+  status=$(curl -sS -o "$response" -w '%{http_code}' "$@") || {
+    echo "FAILED: $label (connection failure)"
+    return 1
+  }
+  if [ "$status" != "$expected" ]; then
+    echo "FAILED: $label — expected HTTP $expected, got $status"
+    cat "$response"
+    echo
+    return 1
+  fi
+  echo "PASS: $label (HTTP $status)"
+}
+
+register_and_login() {
+  local role="$1"
+  local email="ci-${GITHUB_RUN_ID:-local}-${GITHUB_RUN_ATTEMPT:-1}-${role}@example.com"
+  local password='RentxCIpassword123!'
+  local body="/tmp/rentx-${role}.json"
+
+  request "$role registration" 201 "$body" \
+    -H 'Content-Type: application/json' \
+    -X POST "$BASE/api/auth/register" \
+    --data "{\"name\":\"CI ${role}\",\"email\":\"$email\",\"password\":\"$password\",\"role\":\"$role\"}"
+
+  request "$role login" 200 "$body" \
+    -H 'Content-Type: application/json' \
+    -X POST "$BASE/api/auth/login" \
+    --data "{\"email\":\"$email\",\"password\":\"$password\"}"
+
+  jq -er '.token' "$body"
+}
+
+echo "Starting disposable RentX stack..."
 "${COMPOSE[@]}" up --build --detach --wait --wait-timeout 240
-curl -fsS http://127.0.0.1:8080/health
 
-EMAIL="ci-${GITHUB_RUN_ID:-local}-${GITHUB_RUN_ATTEMPT:-1}@example.com"
-PASSWORD='RentxCIpassword123!'
+request "Frontend health" 200 /tmp/rentx-health.txt "$BASE/health"
 
-status=$(curl -sS -o /tmp/rentx-register.json -w '%{http_code}' \
-  -H 'Content-Type: application/json' \
-  -X POST http://127.0.0.1:8080/api/auth/register \
-  --data "{\"name\":\"CI Owner\",\"email\":\"$EMAIL\",\"password\":\"$PASSWORD\",\"role\":\"owner\"}")
+OWNER_TOKEN="$(register_and_login owner)"
+RENTER_TOKEN="$(register_and_login renter)"
 
-if [ "$status" != "201" ]; then
-  cat /tmp/rentx-register.json
-  echo "Registration smoke test returned HTTP $status"
-  exit 1
-fi
+check_api() {
+  local label="$1" token="$2" path="$3"
+  request "$label" 200 "/tmp/rentx-response.json" \
+    -H "Authorization: Bearer $token" "$BASE$path"
+}
 
-TOKEN=$(curl -fsS -H 'Content-Type: application/json' \
-  -X POST http://127.0.0.1:8080/api/auth/login \
-  --data "{\"email\":\"$EMAIL\",\"password\":\"$PASSWORD\"}" | jq -er '.token')
+check_api "Auth profile" "$OWNER_TOKEN" "/api/auth/me"
+check_api "Owner profile" "$OWNER_TOKEN" "/api/users/me"
+check_api "Public product search" "$OWNER_TOKEN" "/api/products"
+check_api "Owner inventory" "$OWNER_TOKEN" "/api/owner/products"
+check_api "Owner booking requests" "$OWNER_TOKEN" "/api/owner/bookings"
 
-for path in \
-  /api/auth/me /api/users/me /api/products /api/owner/products \
-  /api/bookings /api/owner/bookings /api/payments \
-  /api/notifications /api/wishlist; do
-  echo "Checking $path"
-  curl -fsS -o /dev/null \
-    -H "Authorization: Bearer $TOKEN" \
-    "http://127.0.0.1:8080$path"
-done
+check_api "Renter profile" "$RENTER_TOKEN" "/api/users/me"
+check_api "Renter bookings" "$RENTER_TOKEN" "/api/bookings"
+check_api "Payment history" "$RENTER_TOKEN" "/api/payments"
+check_api "Notifications" "$RENTER_TOKEN" "/api/notifications"
+check_api "Wishlist" "$RENTER_TOKEN" "/api/wishlist"
 
-echo "RentX container integration smoke tests passed."
+echo "All RentX container integration smoke checks passed."
